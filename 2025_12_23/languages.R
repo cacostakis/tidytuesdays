@@ -200,7 +200,8 @@ factor_lang_status <-
                    "The language is spoken by grandparents and older generations. While the parent generation may understand it, they do not speak it to children or among themselves.",
                    "The youngest speakers are grandparents and older, and they speak the language partially and infrequently.",
                    "There are no speakers left.")),
-    by = "code")
+    by = "code") %>%
+  mutate(col_name = str_replace(label, " ", "_"))
 
 lang_geo %>%
   tabyl(continent, lang_status_label) %>%
@@ -277,9 +278,9 @@ map_selected_gir
 # Export relevant dfs for App.r
 
 # write_rds(lang_geo, file = "2025_12_23/data/language_with_geo_coords.rds")
-write_rds(languages_rename, file = "2025_12_23/data/languages_long_format_no_geo_coords.rds")
-write_rds(factor_lang_status, file = "2025_12_23/data/language_status_factor_df.rds")
-write_rds(geo_countries, file = "2025_12_23/data/rnaturalearth_api_df.rds")
+write_rds(languages_rename, file = "2025_12_23/shiny_app/data/languages_long_format_no_geo_coords.rds")
+write_rds(factor_lang_status, file = "2025_12_23/shiny_app/data/language_status_factor_df.rds")
+write_rds(geo_countries, file = "2025_12_23/shiny_app/data/rnaturalearth_api_df.rds")
 
 
 

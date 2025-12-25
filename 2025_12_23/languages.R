@@ -42,9 +42,9 @@ library(bslib)
 
 #_______________________________________________________________________________
 #  Call downloaded files
-endangered_status <- readRDS(file = "2025_12_23/data/2025_12_23_endangered_status.rds")
-fam_api <- readRDS(file = "2025_12_23/data/2025_12_23_families.rds")
-lang_api <- readRDS(file = "2025_12_23/data/2025_12_23_languages.rds")
+endangered_status <- readRDS(file = "2025_12_23/shiny_app/data/2025_12_23_endangered_status.rds")
+fam_api <- readRDS(file = "2025_12_23/shiny_app/data/2025_12_23_families.rds")
+lang_api <- readRDS(file = "2025_12_23/shiny_app/data/2025_12_23_languages.rds")
 
 #_______________________________________________________________________________
 #  Filter and clean language data
@@ -275,6 +275,19 @@ map_selected_gir
 
 
 #_______________________________________________________________________________
+# Updated rnaturalearth projects
+
+region_asia <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=100")
+region_europe <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=10")
+region_america <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=-90")
+region_africa <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=20")
+region_oceania <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=150")
+region_default <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=0")
+
+
+
+
+#_______________________________________________________________________________
 # Export relevant dfs for App.r
 
 # write_rds(lang_geo, file = "2025_12_23/data/language_with_geo_coords.rds")
@@ -282,5 +295,11 @@ write_rds(languages_rename, file = "2025_12_23/shiny_app/data/languages_long_for
 write_rds(factor_lang_status, file = "2025_12_23/shiny_app/data/language_status_factor_df.rds")
 write_rds(geo_countries, file = "2025_12_23/shiny_app/data/rnaturalearth_api_df.rds")
 
+write_rds(region_africa, file = "2025_12_23/shiny_app/data/rnaturalearth_africa_projection.rds")
+write_rds(region_america, file = "2025_12_23/shiny_app/data/rnaturalearth_america_projection.rds")
+write_rds(region_asia, file = "2025_12_23/shiny_app/data/rnaturalearth_asia_projection.rds")
+write_rds(region_europe, file = "2025_12_23/shiny_app/data/rnaturalearth_europe_projection.rds")
+write_rds(region_oceania, file = "2025_12_23/shiny_app/data/rnaturalearth_oceania_projection.rds")
+write_rds(region_default, file = "2025_12_23/shiny_app/data/rnaturalearth_default_projection.rds")
 
 

@@ -1,42 +1,12 @@
 
-library(tidyverse)
-library(tidytuesdayR)
-library(gh)
-library(usethis)
-library(janitor)
-library(rnaturalearth)
-library(countrycode)
-library(ggiraph)
-library(bslib)
-
 #_______________________________________________________________________________
-# Theming
-
-ipa_colors <- c(
-  "#1f2937",   # 1 Dark blue-gray (good for backgrounds)
-  "#093c2eff", # 2 IPA forest
-  "#27447E",   # 3 IPA navy
-  "#374151",   # 4 Medium gray
-  "#43a551ff", # 5 IPA green (good for primary)
-  "#10b981",   # 6 IPA off-green
-  "#84d0d4ff", # 7 IPA lt blue
-  "#f59e0b",   # 8 IPA orange (good for warning)
-  "#f8fafc"    # 9 Light gray (good for light backgrounds)
-)
-
-custom_theme <- 
-  bs_theme(
-    preset = "bootstrap",  # Start with clean bootstrap instead of darkly
-    version = 5,
-    primary = ipa_colors[5],    # IPA green for primary actions
-    secondary = ipa_colors[2],  # Medium gray for secondary
-    success = ipa_colors[7],    # Green for success
-    warning = ipa_colors[8],    # Orange for warnings
-    # Let bslib handle light/dark mode automatically  --> fg and bg
-    base_font = font_google("Inter"),      # Modern, readable font
-    heading_font = font_google("Inter"),   # Consistent headings
-    code_font = font_google("JetBrains Mono") # Good code font
-  )
+#  Packages
+library(tidyverse)
+library(rnaturalearth)
+library(ggiraph)
+library(shiny)
+library(shinythemes)
+library(wbstats)
 
 #_______________________________________________________________________________
 #  Call downloaded files
@@ -44,26 +14,17 @@ languages_rename <- readRDS(file = "data/languages_long_format_no_geo_coords.rds
 factor_lang_status <- readRDS(file = "data/language_status_factor_df.rds")
 geo_countries <- readRDS(file = "data/rnaturalearth_api_df.rds")
 
-#_______________________________________________________________________________
-# Exploratory visualization
+region_africa <- readRDS(file = "data/rnaturalearth_africa_projection.rds")
+region_america <- readRDS(file = "data/rnaturalearth_america_projection.rds")
+region_asia <- readRDS(file = "data/rnaturalearth_asia_projection.rds")
+region_europe <- readRDS(file = "data/rnaturalearth_europe_projection.rds")
+region_oceania <- readRDS(file = "data/rnaturalearth_oceania_projection.rds")
+region_default <- readRDS(file = "data/rnaturalearth_default_projection.rds")
 
-# Join lang data to the geo coords (as opposed to joining geo coords to the lang data which was useful for exploring the data)
-
-
-#_______________________________________________________________________________
-# Download diff projections from rnaturalearthdata
-region_asia <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=100")
-region_europe <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=10")
-region_america <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=-90")
-region_africa <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=20")
-region_oceania <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=150")
-region_default <- sf::st_transform(geo_countries, crs = "+proj=moll +lon_0=0")
 
 
 #_______________________________________________________________________________
 # Wbstats population data
-library(wbstats)
-
 wb_pop_data <-
   wb_data(
   indicator = c(
@@ -98,9 +59,6 @@ summary_lang <-
 
 #_______________________________________________________________________________
 # Shiny application
-library(shiny)
-library(shinythemes)
-
 
 # UI
 ui <- fluidPage(
